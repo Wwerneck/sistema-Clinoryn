@@ -1,0 +1,34 @@
+<header class="app-topbar">
+  <button class="btn btn-light d-lg-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#mobileSidebar" aria-controls="mobileSidebar" aria-label="Abrir menu">
+    <i class="bi bi-list fs-5"></i>
+  </button>
+  <div class="topbar-search">
+    <i class="bi bi-search"></i>
+    <input type="search" placeholder="Buscar paciente, consulta, exame..." aria-label="Buscar no sistema" disabled>
+  </div>
+  <div class="d-flex align-items-center gap-2 ms-auto">
+    <button class="notification-button" type="button" aria-label="Notificações">
+      <i class="bi bi-bell"></i>
+      <span class="notification-dot">0</span>
+    </button>
+    <div class="dropdown">
+      <button class="user-menu dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+        <span class="user-avatar">{{ request.user.username|first|upper }}</span>
+        <span class="user-copy">
+          <strong>{{ request.user.get_full_name|default:request.user.username }}</strong>
+          <small class="d-block">{{ request.user.get_role_display }}</small>
+        </span>
+      </button>
+      <ul class="dropdown-menu dropdown-menu-end shadow-sm">
+        <li><span class="dropdown-item-text small text-secondary">{{ request.user.email|default:'Conta Clinoryn' }}</span></li>
+        <li><hr class="dropdown-divider"></li>
+        <li>
+          <form method="post" action="{% url 'accounts:logout' %}">
+            {% csrf_token %}
+            <button class="dropdown-item text-danger" type="submit"><i class="bi bi-box-arrow-left me-2"></i>Sair</button>
+          </form>
+        </li>
+      </ul>
+    </div>
+  </div>
+</header>

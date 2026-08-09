@@ -1,0 +1,45 @@
+* { box-sizing: border-box; }
+html { font-size: 16px; }
+body {
+  margin: 0;
+  color: var(--color-text-primary);
+  background:
+    linear-gradient(180deg, rgba(255,255,255,.7), rgba(245,247,250,0) 220px),
+    var(--color-background);
+  font-family: Inter, system-ui, -apple-system, "Segoe UI", sans-serif;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+h1, h2, h3 {
+  margin-top: 0;
+  color: var(--color-text-primary);
+  font-weight: 750;
+  letter-spacing: 0;
+}
+h1 { font-size: clamp(1.55rem, 2.4vw, 2.05rem); line-height: 1.15; }
+h2 { font-size: 1.05rem; line-height: 1.25; }
+h3 { font-size: .95rem; line-height: 1.3; }
+p { color: var(--color-text-secondary); }
+a { color: var(--color-primary); text-underline-offset: 3px; }
+a:hover { color: var(--color-primary-dark); }
+:focus-visible {
+  outline: 3px solid rgba(37, 99, 235, .22);
+  outline-offset: 2px;
+}
+.eyebrow {
+  display: block;
+  margin-bottom: var(--space-2);
+  color: var(--color-primary);
+  font-size: .72rem;
+  font-weight: 750;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+.visually-hidden-focusable:not(:focus):not(:focus-within) {
+  position: absolute!important;
+  width: 1px!important;
+  height: 1px!important;
+  overflow: hidden!important;
+  clip: rect(0,0,0,0)!important;
+}
+::selection { color: #fff; background: var(--color-primary); }

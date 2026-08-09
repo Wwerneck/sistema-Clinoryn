@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block title %}Agenda médica | Clinoryn{% endblock %}
+{% block content %}
+<section class="card">
+  <div class="page-header">
+    <div><span class="eyebrow">Etapa 3</span><h1>Configuração da agenda</h1></div>
+    {% if request.user.role == 'ADMIN' or request.user.role == 'MEDICO' %}<div class="inline-actions"><a class="button-link primary" href="{% url 'agenda:availability-create' %}">Nova disponibilidade</a><a class="button-link" href="{% url 'agenda:block-create' %}">Novo bloqueio</a></div>{% endif %}
+  </div>
+  {% if request.user.role != 'MEDICO' %}
+  <form class="search" method="get"><select name="medico"><option value="">Todos os médicos</option>{% for medico in medicos %}<option value="{{ medico.pk }}" {% if request.GET.medico == medico.pk|stringformat:'s' %}selected{% endif %}>{{ medico.nome }} — {{ medico.especialidade }}</option>{% endfor %}</select><button>Filtrar</button></form>
+  {% endif %}
+  <h2>Disponibilidade semanal</h2>
+  <div class="table-wrap"><table><thead><tr><th>Médico</th><th>Dia</th><th>Período</th><th>Duração</th><th>Status</th>{% if request.user.role != 'RECEPCAO' %}<th></th>{% endif %}</tr></thead><tbody>
+  {% for item in disponibilidades %}<tr><td>{{ item.medico.nome }}</td><td>{{ item.get_dia_semana_display }}</td><td>{{ item.hora_inicio|time:'H:i' }}–{{ item.hora_fim|time:'H:i' }}</td><td>{{ item.duracao_consulta }} min</td><td>{% if item.ativo %}<span class="badge success">Ativa</span>{% else %}<span class="badge">Inativa</span>{% endif %}</td>{% if request.user.role != 'RECEPCAO' %}<td><a href="{% url 'agenda:availability-delete' item.pk %}">Excluir</a></td>{% endif %}</tr>{% empty %}<tr><td colspan="6">Nenhuma disponibilidade configurada.</td></tr>{% endfor %}
+  </tbody></table></div>
+  <h2>Bloqueios e indisponibilidades</h2>
+  <div class="table-wrap"><table><thead><tr><th>Médico</th><th>Data</th><th>Período</th><th>Motivo</th><th>Observação</th>{% if request.user.role != 'RECEPCAO' %}<th></th>{% endif %}</tr></thead><tbody>
+  {% for item in bloqueios %}<tr><td>{{ item.medico.nome }}</td><td>{{ item.data|date:'d/m/Y' }}</td><td>{{ item.hora_inicio|time:'H:i' }}–{{ item.hora_fim|time:'H:i' }}</td><td>{{ item.get_motivo_display }}</td><td>{{ item.observacao|default:'—' }}</td>{% if request.user.role != 'RECEPCAO' %}<td><a href="{% url 'agenda:block-delete' item.pk %}">Excluir</a></td>{% endif %}</tr>{% empty %}<tr><td colspan="6">Nenhum bloqueio cadastrado.</td></tr>{% endfor %}
+  </tbody></table></div>
+</section>
+{% endblock %}

@@ -1,0 +1,100 @@
+.app-sidebar {
+  position: fixed;
+  inset: 0 auto 0 0;
+  z-index: 1040;
+  width: var(--sidebar-width);
+  padding: 1.15rem .95rem;
+  color: #d9e7ec;
+  background: linear-gradient(180deg, #0b2f3a 0%, #103f4d 54%, #0b2f3a 100%);
+  border-right: 1px solid rgba(255,255,255,.08);
+  overflow-y: auto;
+}
+.brand {
+  display: flex;
+  align-items: center;
+  gap: .72rem;
+  min-height: 48px;
+  margin: 0 .35rem 1.35rem;
+  color: #fff;
+  text-decoration: none;
+  font-size: 1.05rem;
+  font-weight: 800;
+}
+.brand-mark {
+  display: grid;
+  width: 38px;
+  height: 38px;
+  place-items: center;
+  border: 1px solid rgba(255,255,255,.18);
+  border-radius: 8px;
+  color: #dff9ff;
+  background: rgba(255,255,255,.10);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.16);
+}
+.sidebar-label {
+  display: block;
+  margin: 1.2rem .7rem .45rem;
+  color: #8fb3bf;
+  font-size: .66rem;
+  font-weight: 750;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+}
+.sidebar-nav { display: grid; gap: .18rem; }
+.sidebar-link {
+  display: flex;
+  align-items: center;
+  gap: .72rem;
+  min-height: 40px;
+  padding: .58rem .7rem;
+  border-radius: 7px;
+  color: #d9e7ec;
+  text-decoration: none;
+  font-size: .88rem;
+  font-weight: 620;
+  transition: background var(--transition), color var(--transition), transform var(--transition);
+}
+.sidebar-link:hover,
+.sidebar-link:focus-visible {
+  color: #fff;
+  background: rgba(255,255,255,.11);
+  transform: translateX(1px);
+}
+.sidebar-link i {
+  width: 1.18rem;
+  color: #a7cad5;
+  font-size: 1rem;
+}
+.sidebar-link:hover i { color: #fff; }
+.sidebar-footer {
+  margin-top: var(--space-6);
+  padding-top: var(--space-4);
+  border-top: 1px solid rgba(255,255,255,.12);
+}
+.sidebar-user {
+  display: flex;
+  align-items: center;
+  gap: .7rem;
+  margin-bottom: .7rem;
+  padding: .65rem;
+  border: 1px solid rgba(255,255,255,.10);
+  border-radius: 8px;
+  background: rgba(255,255,255,.06);
+}
+.sidebar-user-copy { display: grid; min-width: 0; line-height: 1.2; }
+.sidebar-user-copy strong {
+  overflow: hidden;
+  color: #fff;
+  font-size: .78rem;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.sidebar-user-copy small { color: #a7cad5; font-size: .68rem; }
+.sidebar-footer button.sidebar-link {
+  color: #d9e7ec;
+  background: transparent;
+}
+.offcanvas.app-sidebar {
+  color: #d9e7ec;
+  background: linear-gradient(180deg, #0b2f3a 0%, #103f4d 100%);
+}

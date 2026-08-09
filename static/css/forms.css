@@ -1,0 +1,84 @@
+label {
+  display: block;
+  margin-bottom: .4rem;
+  color: var(--color-text-primary);
+  font-size: .84rem;
+  font-weight: 700;
+}
+input:not([type=checkbox]):not([type=radio]),
+select,
+textarea {
+  display: block;
+  width: 100%;
+  min-height: 44px;
+  padding: .65rem .78rem;
+  border: 1px solid #cbd8df;
+  border-radius: 7px;
+  color: var(--color-text-primary);
+  background: #fff;
+  transition: border var(--transition), box-shadow var(--transition), background var(--transition);
+}
+textarea { min-height: 112px; }
+input:focus,
+select:focus,
+textarea:focus {
+  border-color: var(--color-primary);
+  outline: 0;
+  box-shadow: 0 0 0 .22rem rgba(21,94,117,.12);
+}
+input:disabled,
+select:disabled,
+textarea:disabled {
+  color: var(--color-text-muted);
+  background: #f8fafc;
+}
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-4);
+}
+.field-wide { grid-column: 1 / -1; }
+.field-error,
+.errorlist,
+.error {
+  color: var(--color-danger);
+  font-size: .82rem;
+}
+.search {
+  display: flex;
+  gap: var(--space-3);
+  margin: var(--space-5) 0;
+}
+.search button { flex: 0 0 auto; }
+button,
+.button-link {
+  display: inline-flex;
+  min-height: 40px;
+  align-items: center;
+  justify-content: center;
+  gap: .45rem;
+  padding: .58rem .9rem;
+  border: 1px solid transparent;
+  border-radius: 7px;
+  color: var(--color-primary-dark);
+  background: var(--color-primary-soft);
+  text-decoration: none;
+  font-weight: 700;
+  transition: transform var(--transition), background var(--transition), border-color var(--transition), color var(--transition);
+}
+.button-link.primary,
+button:not(.secondary):not(.link-danger):not(.btn-close):not(.notification-button):not(.user-menu) {
+  color: #fff;
+  background: var(--color-primary);
+}
+.button-link:hover,
+button:hover { transform: translateY(-1px); }
+.secondary {
+  color: var(--color-primary-dark);
+  background: var(--color-primary-soft);
+}
+.link-danger {
+  min-height: auto;
+  color: var(--color-danger);
+  background: transparent;
+}

@@ -1,0 +1,6 @@
+<div class="inline-actions">
+{% if item.status == 'AGENDADA' %}<form method="post" action="{% url 'recepcao:appointment-status' item.pk 'CONFIRMADA' %}">{% csrf_token %}<input type="hidden" name="next" value="{{ request.path }}"><button>Confirmar</button></form>{% endif %}
+{% if item.status == 'CONFIRMADA' %}<form method="post" action="{% url 'recepcao:appointment-status' item.pk 'PACIENTE_CHEGOU' %}">{% csrf_token %}<input type="hidden" name="next" value="{{ request.path }}"><button>Check-in</button></form>{% endif %}
+{% if item.status == 'PACIENTE_CHEGOU' %}<form method="post" action="{% url 'recepcao:appointment-status' item.pk 'AGUARDANDO' %}">{% csrf_token %}<input type="hidden" name="next" value="{{ request.path }}"><button>Enviar à espera</button></form>{% endif %}
+{% if item.status == 'AGENDADA' or item.status == 'CONFIRMADA' %}<form method="post" action="{% url 'recepcao:appointment-status' item.pk 'NAO_COMPARECEU' %}">{% csrf_token %}<input type="hidden" name="next" value="{{ request.path }}"><button class="link-danger">Ausente</button></form>{% endif %}
+</div>

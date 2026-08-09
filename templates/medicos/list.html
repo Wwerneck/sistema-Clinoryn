@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block title %}Médicos | Clinoryn{% endblock %}
+{% block content %}
+{% url 'medicos:create' as create_url %}
+{% include 'components/page_header.html' with kicker='Equipe clínica' title='Médicos' subtitle='Profissionais, especialidades e disponibilidade clínica.' action_url=create_url action_label='Novo médico' action_icon='bi-person-plus' %}
+<section class="data-panel">
+  <div class="data-toolbar">
+    <form class="filter-form" method="get">
+      <div class="filter-control"><i class="bi bi-search"></i><input name="q" value="{{ request.GET.q }}" placeholder="Buscar por nome, CRM ou especialidade"></div>
+      <button class="btn-pro">Pesquisar</button>
+    </form>
+  </div>
+  {% if object_list %}
+  <div class="table-wrap border-0 rounded-0">
+    <table class="professional-table">
+      <thead><tr><th>Profissional</th><th>CRM</th><th>Especialidade</th><th>Status</th><th class="text-end">Ações</th></tr></thead>
+      <tbody>
+        {% for item in object_list %}
+        <tr>
+          <td><div class="entity-cell"><span class="entity-avatar">{{ item.nome|first }}</span><span class="entity-copy"><strong>{{ item.nome }}</strong><small>{{ item.email }}</small></span></div></td>
+          <td>{{ item.crm }}</td>
+          <td>{{ item.especialidade.nome }}</td>
+          <td>{% if item.ativo %}{% include 'components/status_badge.html' with status='CONCLUIDA' label='Ativo' %}{% else %}{% include 'components/status_badge.html' with status='CANCELADA' label='Inativo' %}{% endif %}</td>
+          <td><div class="row-actions"><a class="icon-button" href="{% url 'agenda:list' %}?medico={{ item.pk }}" title="Ver agenda"><i class="bi bi-calendar3"></i></a>{% if request.user.role == 'ADMIN' and item.ativo %}<a class="icon-button text-danger" href="{% url 'medicos:delete' item.pk %}" title="Excluir médico" aria-label="Excluir médico"><i class="bi bi-trash"></i></a>{% endif %}</div></td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  <div class="table-footer"><span>Equipe médica</span>{% include 'components/pagination.html' %}</div>
+  {% else %}
+  {% include 'components/empty_state.html' with icon='bi-person-badge' title='Nenhum médico encontrado' description='Cadastre profissionais para configurar a agenda.' action_url=create_url action_label='Cadastrar médico' %}
+  {% endif %}
+</section>
+{% endblock %}

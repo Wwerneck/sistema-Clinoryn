@@ -1,0 +1,65 @@
+<div class="app-sidebar {% if offcanvas %}offcanvas offcanvas-start d-lg-none{% else %}d-none d-lg-block{% endif %}" {% if offcanvas %}tabindex="-1" id="mobileSidebar" aria-labelledby="mobileSidebarLabel"{% endif %}>
+  {% if offcanvas %}
+    <div class="offcanvas-header">
+      <span class="brand mb-0" id="mobileSidebarLabel">
+        <span class="brand-mark"><i class="bi bi-heart-pulse-fill"></i></span>
+        Clinoryn
+      </span>
+      <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Fechar menu"></button>
+    </div>
+    <div class="offcanvas-body p-0">
+  {% endif %}
+
+  <a class="brand" href="{% url 'dashboards:home' %}">
+    <span class="brand-mark"><i class="bi bi-heart-pulse-fill"></i></span>
+    <span>Clinoryn</span>
+  </a>
+
+  <span class="sidebar-label">Principal</span>
+  <nav class="sidebar-nav" aria-label="Navegação principal">
+    <a class="sidebar-link" href="{% url 'dashboards:home' %}"><i class="bi bi-grid-1x2"></i>Dashboard</a>
+    {% if request.user.role == 'ADMIN' %}
+      <a class="sidebar-link" href="{% url 'medicos:list' %}"><i class="bi bi-person-badge"></i>Médicos</a>
+      <a class="sidebar-link" href="{% url 'recepcao:list' %}"><i class="bi bi-headset"></i>Recepção</a>
+      <a class="sidebar-link" href="{% url 'pacientes:list' %}"><i class="bi bi-people"></i>Pacientes</a>
+      <a class="sidebar-link" href="{% url 'especialidades:list' %}"><i class="bi bi-activity"></i>Especialidades</a>
+      <a class="sidebar-link" href="{% url 'consultas:list' %}"><i class="bi bi-calendar2-check"></i>Consultas</a>
+      <a class="sidebar-link" href="{% url 'financeiro:dashboard' %}"><i class="bi bi-wallet2"></i>Financeiro</a>
+      <a class="sidebar-link" href="{% url 'auditoria:list' %}"><i class="bi bi-shield-check"></i>Auditoria</a>
+    {% elif request.user.role == 'MEDICO' %}
+      <a class="sidebar-link" href="{% url 'medicos:own-schedule' %}"><i class="bi bi-calendar3"></i>Minha agenda</a>
+      <a class="sidebar-link" href="{% url 'pacientes:list' %}"><i class="bi bi-people"></i>Pacientes</a>
+      <a class="sidebar-link" href="{% url 'prescricoes:list' %}"><i class="bi bi-capsule"></i>Prescrições</a>
+      <a class="sidebar-link" href="{% url 'exames:list' %}"><i class="bi bi-file-earmark-medical"></i>Exames</a>
+      <a class="sidebar-link" href="{% url 'financeiro:dashboard' %}"><i class="bi bi-graph-up"></i>Financeiro</a>
+    {% elif request.user.role == 'RECEPCAO' %}
+      <a class="sidebar-link" href="{% url 'recepcao:daily-schedule' %}"><i class="bi bi-calendar3"></i>Agenda</a>
+      <a class="sidebar-link" href="{% url 'consultas:create' %}"><i class="bi bi-calendar-plus"></i>Nova consulta</a>
+      <a class="sidebar-link" href="{% url 'pacientes:list' %}"><i class="bi bi-people"></i>Pacientes</a>
+      <a class="sidebar-link" href="{% url 'medicos:list' %}"><i class="bi bi-person-badge"></i>Médicos</a>
+      <a class="sidebar-link" href="{% url 'financeiro:dashboard' %}"><i class="bi bi-credit-card"></i>Pagamentos</a>
+    {% else %}
+      <a class="sidebar-link" href="{% url 'consultas:create' %}"><i class="bi bi-calendar-plus"></i>Agendar consulta</a>
+      <a class="sidebar-link" href="{% url 'consultas:list' %}"><i class="bi bi-calendar2-check"></i>Minhas consultas</a>
+      <a class="sidebar-link" href="{% url 'exames:list' %}"><i class="bi bi-file-earmark-medical"></i>Meus exames</a>
+      <a class="sidebar-link" href="{% url 'prescricoes:list' %}"><i class="bi bi-capsule"></i>Minhas prescrições</a>
+      <a class="sidebar-link" href="{% url 'financeiro:dashboard' %}"><i class="bi bi-receipt"></i>Pagamentos</a>
+    {% endif %}
+  </nav>
+
+  <div class="sidebar-footer">
+    <div class="sidebar-user">
+      <span class="user-avatar">{{ request.user.username|first|upper }}</span>
+      <span class="sidebar-user-copy">
+        <strong>{{ request.user.get_full_name|default:request.user.username }}</strong>
+        <small>{{ request.user.get_role_display }}</small>
+      </span>
+    </div>
+    <form method="post" action="{% url 'accounts:logout' %}">
+      {% csrf_token %}
+      <button class="sidebar-link w-100 border-0" type="submit"><i class="bi bi-box-arrow-left"></i>Sair</button>
+    </form>
+  </div>
+
+  {% if offcanvas %}</div>{% endif %}
+</div>

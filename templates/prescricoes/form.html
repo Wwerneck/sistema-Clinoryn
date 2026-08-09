@@ -1,0 +1,1 @@
+{% extends "base.html" %}{% block content %}<section class="card"><h1>Nova prescrição — {{ consulta.paciente.nome_completo }}</h1><form method="post">{% csrf_token %}{{ form.as_p }}{{ formset.management_form }}{% for item in formset %}<fieldset>{{ item.as_p }}</fieldset>{% endfor %}<button>Salvar prescrição</button></form></section>{% endblock %}

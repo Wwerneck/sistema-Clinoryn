@@ -1,0 +1,6 @@
+<div class="inline-actions">
+{% if item.status == 'AGUARDANDO' %}<form method="post" action="{% url 'medicos:attendance-status' item.pk 'EM_ATENDIMENTO' %}">{% csrf_token %}<input type="hidden" name="next" value="{{ request.path }}"><button>Iniciar atendimento</button></form>{% endif %}
+{% if item.status == 'EM_ATENDIMENTO' %}<form method="post" action="{% url 'medicos:attendance-status' item.pk 'CONCLUIDA' %}">{% csrf_token %}<input type="hidden" name="next" value="{{ request.path }}"><button>Concluir</button></form>{% endif %}
+{% if item.status == 'EM_ATENDIMENTO' or item.status == 'CONCLUIDA' %}<a class="button-link" href="{% url 'prontuarios:record' item.pk %}">Prontuário</a>{% endif %}
+{% if item.status == 'EM_ATENDIMENTO' or item.status == 'CONCLUIDA' %}<a href="{% url 'prescricoes:create' item.pk %}">Prescrever</a><a href="{% url 'exames:create' item.pk %}">Exame</a>{% endif %}
+</div>

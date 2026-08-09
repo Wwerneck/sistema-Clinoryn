@@ -1,0 +1,33 @@
+from django import forms
+from django.contrib.auth.password_validation import validate_password
+
+from accounts.models import User
+from accounts.services import create_user_with_profile
+from especialidades.models import Especialidade
+
+from .models import Medico
+
+
+class MedicoCreateForm(forms.ModelForm):
+    username = forms.CharField(label="Usuário", max_length=150)
+    password = forms.CharField(label="Senha inicial", widget=forms.PasswordInput, validators=[validate_password])
+
+    class Meta:
+        model = Medico
+        exclude = ("user", "created_at", "updated_at")
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields["especialidade"].queryset = Especialidade.objects.filter(
+            ativo=True
+        ).order_by("nome")
+
+    def clean_username(self):
+        username = self.cleaned_data["username"]
+        if User.objects.filter(username__iexact=username).exists():
+            raise forms.ValidationError("Este usuário já está em uso.")
+        return username
+
+    def save(self, commit=True):
+        data = self.cleaned_data.copy()
+        return create_user_with_profile(role=User.Role.MEDICO, profile_model=Medico, profile_data=data).medico

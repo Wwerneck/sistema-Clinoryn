@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% block title %}Entrar | Clinoryn{% endblock %}
+{% block public_content %}
+<section class="auth-story" aria-label="Clinoryn">
+  <div class="auth-brand-mark"><i class="bi bi-heart-pulse-fill" aria-hidden="true"></i><span>Clinoryn</span></div>
+  <div class="auth-story-copy">
+    <span class="auth-story-label">Gestão clínica integrada</span>
+    <h2>Mais clareza para cuidar de cada atendimento.</h2>
+    <p>Agenda, pacientes e rotina clínica conectados em um ambiente seguro.</p>
+  </div>
+</section>
+
+<section class="auth-card login-panel">
+  <header class="login-header">
+    <span class="login-icon" aria-hidden="true"><i class="bi bi-shield-check"></i></span>
+    <div>
+      <span class="eyebrow">Acesso protegido</span>
+      <h1>Bem-vindo ao Clinoryn</h1>
+      <p>Entre com suas credenciais para acessar sua área de trabalho.</p>
+    </div>
+  </header>
+
+  <form method="post" novalidate class="login-form">
+    {% csrf_token %}
+    {% if form.non_field_errors %}<div class="login-error" role="alert"><i class="bi bi-exclamation-circle" aria-hidden="true"></i>{{ form.non_field_errors }}</div>{% endif %}
+
+    <div class="login-field">
+      <label for="{{ form.username.id_for_label }}">Usuário</label>
+      <div class="login-input-wrap">
+        <i class="bi bi-person" aria-hidden="true"></i>
+        {{ form.username }}
+      </div>
+      {% if form.username.errors %}<div class="field-error">{{ form.username.errors }}</div>{% endif %}
+    </div>
+
+    <div class="login-field">
+      <label for="{{ form.password.id_for_label }}">Senha</label>
+      <div class="login-input-wrap login-password-wrap">
+        <i class="bi bi-lock" aria-hidden="true"></i>
+        {{ form.password }}
+        <button class="password-toggle" type="button" data-password-toggle aria-label="Mostrar senha" title="Mostrar senha"><i class="bi bi-eye" aria-hidden="true"></i></button>
+      </div>
+      {% if form.password.errors %}<div class="field-error">{{ form.password.errors }}</div>{% endif %}
+    </div>
+
+    {% if next %}<input type="hidden" name="next" value="{{ next }}">{% endif %}
+    <button type="submit" class="login-submit"><span>Entrar</span><i class="bi bi-arrow-right" aria-hidden="true"></i></button>
+  </form>
+
+  <footer class="login-footer"><i class="bi bi-lock-fill" aria-hidden="true"></i>Seus dados são tratados em ambiente seguro.</footer>
+</section>
+{% endblock %}

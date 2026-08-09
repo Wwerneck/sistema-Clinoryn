@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block title %}{{ title }} | Clinoryn{% endblock %}
+{% block content %}
+<section class="card">
+  <div class="dashboard-header">
+    <div><span class="eyebrow">{{ request.user.get_role_display }}</span><h1>{{ title }}</h1></div>
+    <form method="post" action="{% url 'accounts:logout' %}">{% csrf_token %}<button class="secondary">Sair</button></form>
+  </div>
+  <p>Bem-vindo, {{ request.user.get_full_name|default:request.user.username }}.</p>
+  <p>A fundação de autenticação e autorização está pronta. Os módulos operacionais serão adicionados nas próximas etapas.</p>
+</section>
+{% endblock %}
