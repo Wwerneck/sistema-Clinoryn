@@ -16,7 +16,7 @@ from financeiro.models import Pagamento
 
 class MedicalAreaTests(TestCase):
     def setUp(self):
-        specialty = Especialidade.objects.create(nome="Pediatria")
+        specialty = Especialidade.objects.get(nome="Pediatria")
         self.users, self.doctors = [], []
         for index in range(2):
             user = User.objects.create_user(

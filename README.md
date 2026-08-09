@@ -90,7 +90,7 @@ O workflow [`.github/workflows/ci.yml`](.github/workflows/ci.yml) executa em pus
 4. testes Django;
 5. relatório de cobertura com mínimo de 70%.
 
-Validação local atual: 43 testes e 83% de cobertura.
+Validação local atual: 48 testes e 83% de cobertura.
 
 ## Execução com Docker
 
@@ -195,7 +195,3 @@ Todas as permissões são verificadas no backend. A alteração do menu não sub
 ## Segurança
 
 Produção exige `SECRET_KEY`, cookies seguros, HTTPS e HSTS. O acesso às dashboards é validado no backend; ocultar links no frontend nunca é tratado como autorização.
-
-## Roadmap
-
-As próximas etapas adicionarão perfis clínicos/administrativos, especialidades, agenda, agendamentos, recepção, prontuário, documentos, financeiro, auditoria e infraestrutura de produção.

@@ -27,7 +27,7 @@ class AgendaTestMixin:
         return user, doctor
 
     def setUp(self):
-        self.specialty = Especialidade.objects.create(nome="Cardiologia")
+        self.specialty = Especialidade.objects.get(nome="Cardiologia")
         self.doctor_user, self.doctor = self.create_doctor("carlos", "CRM-SP 123")
         self.other_user, self.other_doctor = self.create_doctor("ana", "CRM-SP 456")
         self.admin = User.objects.create_user(username="admin-agenda", password="test", role=User.Role.ADMIN)
