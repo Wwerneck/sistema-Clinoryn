@@ -18,7 +18,12 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "corsheaders",
+    "rest_framework",
+    "django_filters",
+    "drf_spectacular",
     "accounts",
+    "api",
     "dashboards",
     "especialidades",
     "pacientes",
@@ -35,6 +40,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
+    "corsheaders.middleware.CorsMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
@@ -99,3 +105,73 @@ CSRF_COOKIE_HTTPONLY = True
 X_FRAME_OPTIONS = "DENY"
 SECURE_CONTENT_TYPE_NOSNIFF = True
 REFERRER_POLICY = "same-origin"
+CORS_ALLOWED_ORIGINS = [
+    item.strip()
+    for item in os.getenv("CORS_ALLOWED_ORIGINS", "").split(",")
+    if item.strip()
+]
+CORS_ALLOW_CREDENTIALS = os.getenv("CORS_ALLOW_CREDENTIALS", "False").lower() == "true"
+API_DOCS_REQUIRE_AUTH = os.getenv("API_DOCS_REQUIRE_AUTH", "False").lower() == "true"
+
+REST_FRAMEWORK = {
+    "DEFAULT_AUTHENTICATION_CLASSES": (
+        "rest_framework_simplejwt.authentication.JWTAuthentication",
+        "rest_framework.authentication.SessionAuthentication",
+    ),
+    "DEFAULT_PERMISSION_CLASSES": (
+        "rest_framework.permissions.IsAuthenticated",
+    ),
+    "DEFAULT_FILTER_BACKENDS": (
+        "django_filters.rest_framework.DjangoFilterBackend",
+        "rest_framework.filters.SearchFilter",
+        "rest_framework.filters.OrderingFilter",
+    ),
+    "DEFAULT_PAGINATION_CLASS": "api.pagination.DefaultPagination",
+    "PAGE_SIZE": 20,
+    "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
+    "DEFAULT_THROTTLE_CLASSES": (
+        "rest_framework.throttling.UserRateThrottle",
+        "rest_framework.throttling.AnonRateThrottle",
+    ),
+    "DEFAULT_THROTTLE_RATES": {
+        "user": os.getenv("DRF_USER_THROTTLE_RATE", "1000/day"),
+        "anon": os.getenv("DRF_ANON_THROTTLE_RATE", "100/day"),
+    },
+}
+
+SPECTACULAR_SETTINGS = {
+    "TITLE": "Clinoryn API",
+    "DESCRIPTION": "API REST versionada para a plataforma Clinoryn.",
+    "VERSION": "1.0.0",
+    "SERVE_INCLUDE_SCHEMA": False,
+    "COMPONENT_SPLIT_REQUEST": True,
+    "SWAGGER_UI_SETTINGS": {
+        "persistAuthorization": True,
+    },
+    "ENUM_NAME_OVERRIDES": {
+        "ConsultaStatusEnum": [
+            ("AGENDADA", "Agendada"),
+            ("CONFIRMADA", "Confirmada"),
+            ("PACIENTE_CHEGOU", "Paciente chegou"),
+            ("AGUARDANDO", "Aguardando"),
+            ("EM_ATENDIMENTO", "Em atendimento"),
+            ("CONCLUIDA", "Concluída"),
+            ("CANCELADA", "Cancelada"),
+            ("NAO_COMPARECEU", "Não compareceu"),
+        ],
+        "PagamentoStatusEnum": [
+            ("PENDENTE", "Pendente"),
+            ("PAGO", "Pago"),
+            ("CANCELADO", "Cancelado"),
+            ("ESTORNADO", "Estornado"),
+        ],
+        "PagamentoFormaEnum": [
+            ("PIX", "Pix"),
+            ("DINHEIRO", "Dinheiro"),
+            ("CARTAO_CREDITO", "Cartão de crédito"),
+            ("CARTAO_DEBITO", "Cartão de débito"),
+            ("CONVENIO", "Convênio"),
+            ("OUTRO", "Outro"),
+        ],
+    },
+}
