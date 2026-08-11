@@ -118,6 +118,152 @@ Não use `docker compose down -v` em ambiente com dados: a opção `-v` remove o
 - `/health/live/`: confirma que o processo responde;
 - `/health/ready/`: confirma também a conexão com o banco.
 
+## REST API
+
+A Clinoryn também expõe uma API REST versionada com Django REST Framework.
+
+Base URL:
+
+```text
+/api/v1/
+```
+
+Documentação interativa:
+
+```text
+/api/schema/
+/api/docs/
+/api/redoc/
+```
+
+Em produção, a documentação pode ser protegida com:
+
+```text
+API_DOCS_REQUIRE_AUTH=True
+```
+
+Para consumo por frontends externos ou aplicativo mobile, configure CORS com origins explícitas:
+
+```text
+CORS_ALLOWED_ORIGINS=https://app.seu-dominio.com,https://mobile.seu-dominio.com
+CORS_ALLOW_CREDENTIALS=False
+```
+
+Não use `CORS_ALLOW_ALL_ORIGINS` em produção.
+
+Autenticação:
+
+```text
+POST /api/v1/auth/login/
+POST /api/v1/auth/refresh/
+GET  /api/v1/auth/me/
+```
+
+O login retorna tokens JWT `access` e `refresh`. Requisições autenticadas devem enviar:
+
+```text
+Authorization: Bearer <access-token>
+```
+
+Principais endpoints:
+
+```text
+GET  /api/v1/me/
+GET  /api/v1/me/consultas/
+GET  /api/v1/me/exames/
+GET  /api/v1/me/prescricoes/
+GET  /api/v1/me/pagamentos/
+
+GET  /api/v1/pacientes/
+POST /api/v1/pacientes/
+GET  /api/v1/pacientes/{id}/
+PATCH /api/v1/pacientes/{id}/
+
+GET  /api/v1/medicos/
+GET  /api/v1/medicos/{id}/
+GET  /api/v1/medicos/{id}/agenda/
+GET  /api/v1/medicos/{id}/consultas/
+
+GET  /api/v1/especialidades/
+POST /api/v1/especialidades/
+PATCH /api/v1/especialidades/{id}/
+
+GET  /api/v1/agenda/disponibilidades/
+GET  /api/v1/agenda/bloqueios/
+
+GET  /api/v1/consultas/
+POST /api/v1/consultas/
+PATCH /api/v1/consultas/{id}/
+POST /api/v1/consultas/{id}/cancelar/
+POST /api/v1/consultas/{id}/confirmar/
+POST /api/v1/consultas/{id}/check-in/
+POST /api/v1/consultas/{id}/aguardar/
+POST /api/v1/consultas/{id}/iniciar/
+POST /api/v1/consultas/{id}/finalizar/
+POST /api/v1/consultas/{id}/nao-compareceu/
+GET  /api/v1/consultas/horarios-disponiveis/?medico=&data=
+
+GET  /api/v1/prontuarios/
+POST /api/v1/prontuarios/
+PATCH /api/v1/prontuarios/{id}/
+POST /api/v1/prontuarios/{id}/evolucoes/
+
+GET  /api/v1/prescricoes/
+POST /api/v1/prescricoes/
+
+GET  /api/v1/exames/
+POST /api/v1/exames/
+GET  /api/v1/exames/{id}/arquivo/
+
+GET  /api/v1/financeiro/pagamentos/
+POST /api/v1/financeiro/pagamentos/
+PATCH /api/v1/financeiro/pagamentos/{id}/
+GET  /api/v1/financeiro/pagamentos/resumo/
+```
+
+Listagens usam paginação DRF:
+
+```json
+{
+  "count": 25,
+  "next": null,
+  "previous": null,
+  "results": []
+}
+```
+
+Filtros, busca e ordenação estão disponíveis nos endpoints compatíveis via `django-filter`, `search` e `ordering`. Campos sensíveis não são expostos por serializers públicos, e dados clínicos/financeiros são filtrados no backend conforme o perfil autenticado.
+
+## API Architecture
+
+A arquitetura atual mantém a interface web Django Templates e a API REST em paralelo:
+
+```text
+Django Templates
+↓
+Views web existentes
+↓
+Services / Selectors
+↓
+Django ORM
+↓
+PostgreSQL
+
+API REST
+↓
+Django REST Framework
+↓
+Services / Selectors
+↓
+Django ORM
+↓
+PostgreSQL
+```
+
+Essa abordagem evita duplicar models, tabelas e regras de negócio. Operações críticas, como agendamento, cancelamento, transição de status de consulta e registro de pagamento, reutilizam os services existentes (`consultas.services` e `financeiro.services`). Assim, a interface web e a API compartilham a mesma fonte de verdade para validações, transações, auditoria e persistência.
+
+Os endpoints aplicam isolamento por perfil e permissão por objeto para reduzir risco de IDOR. Pacientes acessam seus dados preferencialmente por `/api/v1/me/...`, médicos ficam restritos aos vínculos assistenciais e à própria agenda, e a recepção não recebe acesso a conteúdo clínico sensível.
+
 ## Backup
 
 Faça backups regulares do volume PostgreSQL e do volume `private_media`. Ambos são necessários para uma restauração completa. Documentos privados nunca devem ser publicados diretamente pelo Nginx.
