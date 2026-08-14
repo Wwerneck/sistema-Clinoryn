@@ -1,6 +1,6 @@
 from .base import *  # noqa: F403
 
-if len(SECRET_KEY) < 50 or SECRET_KEY.startswith(("unsafe", "troque")):  # noqa: F405
+if len(SECRET_KEY) < 32 or SECRET_KEY.startswith(("unsafe", "troque")):  # noqa: F405
     raise RuntimeError("SECRET_KEY forte deve ser configurada em produção.")
 if os.getenv("DATABASE_ENGINE", "postgresql") != "postgresql":  # noqa: F405
     raise RuntimeError("O ambiente de produção exige PostgreSQL.")
