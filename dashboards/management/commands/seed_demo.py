@@ -1,4 +1,5 @@
-from django.core.management.base import BaseCommand
+from django.conf import settings
+from django.core.management.base import BaseCommand, CommandError
 from django.db import transaction
 
 from accounts.models import User
@@ -9,10 +10,13 @@ from recepcao.models import Recepcionista
 
 
 class Command(BaseCommand):
-    help = "Cria dados demonstrativos idempotentes para ambiente local."
+    help = "Cria dados demonstrativos idempotentes em um ambiente DEMO_MODE."
 
     @transaction.atomic
     def handle(self, *args, **options):
+        if not settings.DEMO_MODE:
+            raise CommandError("Defina DEMO_MODE=True antes de criar dados demonstrativos.")
+
         specialty, _ = Especialidade.objects.get_or_create(
             nome="Clínica Geral", defaults={"descricao": "Atendimento clínico geral"}
         )
@@ -61,7 +65,7 @@ class Command(BaseCommand):
         )
         self.stdout.write(
             self.style.SUCCESS(
-                "Dados demo criados/atualizados. Senha local: Demo@123456"
+                "Dados demonstrativos criados/atualizados. Senha: Demo@123456"
             )
         )
         self.stdout.write(f"Administrador: {admin.username}")

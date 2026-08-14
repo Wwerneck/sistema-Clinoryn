@@ -1,5 +1,6 @@
 import os
 from pathlib import Path
+from urllib.parse import unquote, urlparse
 
 from dotenv import load_dotenv
 
@@ -10,6 +11,7 @@ SECRET_KEY = os.getenv("SECRET_KEY", "unsafe-development-key")
 DEBUG = False
 ALLOWED_HOSTS = [item.strip() for item in os.getenv("ALLOWED_HOSTS", "").split(",") if item.strip()]
 CSRF_TRUSTED_ORIGINS = [item.strip() for item in os.getenv("CSRF_TRUSTED_ORIGINS", "").split(",") if item.strip()]
+DEMO_MODE = os.getenv("DEMO_MODE", "False").lower() == "true"
 
 INSTALLED_APPS = [
     "django.contrib.admin",
@@ -40,6 +42,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
+    "whitenoise.middleware.WhiteNoiseMiddleware",
     "corsheaders.middleware.CorsMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
@@ -47,6 +50,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "auditoria.middleware.AuditContextMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
+    "config.middleware.DemoReadOnlyMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
 
@@ -59,11 +63,38 @@ TEMPLATES = [{
         "django.template.context_processors.request",
         "django.contrib.auth.context_processors.auth",
         "django.contrib.messages.context_processors.messages",
+        "config.context_processors.demo_mode",
     ]},
 }]
 WSGI_APPLICATION = "config.wsgi.application"
 
-if os.getenv("DATABASE_ENGINE", "postgresql") == "sqlite":
+DATABASE_CONN_MAX_AGE = int(os.getenv("DATABASE_CONN_MAX_AGE", "60"))
+DATABASE_URL = os.getenv("DATABASE_URL", "")
+
+
+def _database_from_url(database_url):
+    parsed = urlparse(database_url)
+    if parsed.scheme not in {"postgres", "postgresql"}:
+        raise ValueError("DATABASE_URL deve usar o esquema postgres ou postgresql.")
+
+    database_name = unquote(parsed.path.lstrip("/"))
+    if not database_name:
+        raise ValueError("DATABASE_URL precisa informar o nome do banco de dados.")
+
+    return {
+        "ENGINE": "django.db.backends.postgresql",
+        "NAME": database_name,
+        "USER": unquote(parsed.username or ""),
+        "PASSWORD": unquote(parsed.password or ""),
+        "HOST": parsed.hostname or "",
+        "PORT": str(parsed.port or 5432),
+        "CONN_MAX_AGE": DATABASE_CONN_MAX_AGE,
+    }
+
+
+if DATABASE_URL:
+    DATABASES = {"default": _database_from_url(DATABASE_URL)}
+elif os.getenv("DATABASE_ENGINE", "postgresql") == "sqlite":
     DATABASES = {
         "default": {
             "ENGINE": "django.db.backends.sqlite3",
@@ -77,8 +108,8 @@ else:
         "USER": os.getenv("DATABASE_USER", "medagenda"),
         "PASSWORD": os.getenv("DATABASE_PASSWORD", "medagenda"),
         "HOST": os.getenv("DATABASE_HOST", "localhost"),
-    "PORT": os.getenv("DATABASE_PORT", "5432"),
-        "CONN_MAX_AGE": int(os.getenv("DATABASE_CONN_MAX_AGE", "60")),
+        "PORT": os.getenv("DATABASE_PORT", "5432"),
+        "CONN_MAX_AGE": DATABASE_CONN_MAX_AGE,
     }}
 
 AUTH_PASSWORD_VALIDATORS = [

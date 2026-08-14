@@ -43,3 +43,26 @@ a:hover { color: var(--color-primary-dark); }
   clip: rect(0,0,0,0)!important;
 }
 ::selection { color: #fff; background: var(--color-primary); }
+
+.demo-mode-banner {
+  position: fixed;
+  z-index: 20;
+  top: .85rem;
+  left: 50%;
+  display: flex;
+  align-items: center;
+  gap: .55rem;
+  width: fit-content;
+  max-width: calc(100% - 2rem);
+  padding: .58rem .85rem;
+  border: 1px solid rgba(255, 255, 255, .34);
+  border-radius: 999px;
+  color: #fff;
+  background: rgba(15, 63, 79, .9);
+  box-shadow: var(--shadow-md);
+  font-size: .78rem;
+  font-weight: 650;
+  text-align: center;
+  transform: translateX(-50%);
+  backdrop-filter: blur(12px);
+}

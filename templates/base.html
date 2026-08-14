@@ -35,6 +35,12 @@
 </head>
 <body>
   <a class="visually-hidden-focusable" href="#main-content">Pular para o conteúdo</a>
+  {% if DEMO_MODE %}
+    <div class="demo-mode-banner" role="status">
+      <i class="bi bi-eye-fill" aria-hidden="true"></i>
+      <span>Ambiente de demonstração: dados fictícios e alterações desativadas.</span>
+    </div>
+  {% endif %}
   {% if request.user.is_authenticated %}
     <div class="app-shell">
       {% include 'components/sidebar.html' %}

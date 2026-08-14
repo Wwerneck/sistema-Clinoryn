@@ -1,0 +1,35 @@
+services:
+  - type: web
+    name: clinoryn-demo
+    runtime: docker
+    plan: free
+    region: oregon
+    dockerfilePath: ./Dockerfile
+    dockerContext: .
+    healthCheckPath: /health/ready/
+    autoDeployTrigger: checksPass
+    initialDeployHook: python manage.py seed_demo
+    envVars:
+      - key: DJANGO_SETTINGS_MODULE
+        value: config.settings.production
+      - key: SECRET_KEY
+        generateValue: true
+      - key: DATABASE_URL
+        fromDatabase:
+          name: clinoryn-demo-db
+          property: connectionString
+      - key: DEMO_MODE
+        value: "True"
+      - key: API_DOCS_REQUIRE_AUTH
+        value: "True"
+      - key: GUNICORN_WORKERS
+        value: "2"
+
+databases:
+  - name: clinoryn-demo-db
+    plan: free
+    region: oregon
+    databaseName: clinoryn
+    user: clinoryn
+    postgresMajorVersion: "17"
+    ipAllowList: []

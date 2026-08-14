@@ -1,6 +1,6 @@
 # Capturas para a demonstração da Clinoryn
 
-As imagens deste diretório devem utilizar exclusivamente os dados sintéticos criados por `python manage.py seed_demo`.
+As imagens deste diretório devem utilizar exclusivamente os dados sintéticos criados por `python manage.py seed_demo`, com `DEMO_MODE=True` configurado.
 
 ## Roteiro recomendado
 

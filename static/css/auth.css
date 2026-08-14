@@ -225,6 +225,30 @@
   font-size: .76rem;
 }
 
+.demo-access {
+  margin-top: 1.15rem;
+  padding: .9rem;
+  border: 1px solid #b9dce6;
+  border-radius: 8px;
+  background: #f0f9fb;
+}
+
+.demo-access > div {
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+  color: var(--color-primary-dark);
+  font-size: .84rem;
+}
+
+.demo-access > div i { color: var(--color-primary); }
+.demo-access p { margin: .45rem 0 .7rem; font-size: .78rem; }
+.demo-access dl { display: grid; gap: .35rem; margin: 0; }
+.demo-access dl div { display: flex; justify-content: space-between; gap: 1rem; }
+.demo-access dt { color: var(--color-text-secondary); font-size: .76rem; font-weight: 600; }
+.demo-access dd { margin: 0; }
+.demo-access code { padding: .1rem .35rem; border-radius: 4px; color: #0f3f4f; background: #dff1f5; font-size: .76rem; }
+
 @keyframes login-spin { to { transform: rotate(360deg); } }
 
 @media (max-width: 900px) {

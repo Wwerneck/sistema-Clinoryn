@@ -21,8 +21,9 @@
 ## Avaliação rápida
 
 - **Backend e regras de negócio:** perfis, autorização por objeto, agenda transacional, prontuário, financeiro e auditoria.
-- **Qualidade:** 48 testes, cobertura local de 83% e CI com lint, migrations e testes.
-- **Como testar:** suba a aplicação com Docker, execute `python manage.py seed_demo` e entre com uma das contas demonstrativas descritas abaixo.
+- **Qualidade:** 87 testes, cobertura local de 83% e CI com lint, migrations e testes.
+- **Demonstração pública segura:** o `render.yaml` provisiona Docker e PostgreSQL com dados fictícios e modo somente leitura.
+- **Como testar localmente:** suba a aplicação com Docker, ative `DEMO_MODE=True`, execute `python manage.py seed_demo` e entre com uma das contas demonstrativas descritas abaixo.
 
 ## Visão executiva
 
@@ -51,7 +52,7 @@ A Clinoryn foi criada para demonstrar competências de desenvolvimento backend a
 | Indicador | Evidência |
 | --- | --- |
 | Escopo funcional | 12 etapas implementadas |
-| Testes automatizados | 48 testes |
+| Testes automatizados | 87 testes |
 | Cobertura local | 83% |
 | API | REST versionada em `/api/v1/` |
 | Integração contínua | Lint, migrations, testes e cobertura no CI |
@@ -126,13 +127,24 @@ As doze etapas planejadas estão implementadas. Melhorias futuras estão listada
 
 ## Demonstração local
 
-Para popular um ambiente exclusivamente demonstrativo:
+Para popular um ambiente exclusivamente demonstrativo, defina `DEMO_MODE=True` no `.env` e execute:
 
 ```powershell
 python manage.py seed_demo
 ```
 
-O comando pode ser repetido e cria as contas `demo_admin`, `demo_medico`, `demo_recepcao` e `demo_paciente`, todas com a senha local `Demo@123456`. Nunca execute esse comando em produção e troque as credenciais caso o ambiente fique acessível em rede.
+O comando pode ser repetido e cria as contas `demo_admin`, `demo_medico`, `demo_recepcao` e `demo_paciente`, todas com a senha `Demo@123456`. Ele recusa a execução fora de `DEMO_MODE`, para reduzir o risco de inserir dados demonstrativos em uma instância real.
+
+## Deploy da demonstração
+
+O arquivo [`render.yaml`](render.yaml) descreve uma publicação de demonstração com Docker, PostgreSQL, health check e deploy automático após a aprovação do CI. Na primeira publicação, o ambiente cria somente dados fictícios.
+
+- `DEMO_MODE=True` bloqueia requisições de criação, edição e exclusão;
+- credenciais e dados exibidos são exclusivos para demonstração;
+- documentos privados e dados reais de pacientes não devem ser enviados a esse ambiente;
+- a documentação interativa da API permanece protegida por autenticação.
+
+No painel da hospedagem, crie uma nova instância a partir do Blueprint do repositório. Os segredos e a conexão com o banco são gerados/configurados pela própria plataforma, sem serem versionados no GitHub.
 
 ## Integração contínua
 
@@ -144,7 +156,7 @@ O workflow [`.github/workflows/ci.yml`](.github/workflows/ci.yml) executa em pus
 4. testes Django;
 5. relatório de cobertura com mínimo de 70%.
 
-Validação local atual: 48 testes e 83% de cobertura.
+Validação local atual: 87 testes e 83% de cobertura.
 
 ## Execução com Docker
 
