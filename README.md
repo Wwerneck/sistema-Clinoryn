@@ -10,11 +10,19 @@
   <img alt="PostgreSQL" src="https://img.shields.io/badge/PostgreSQL-4169E1?logo=postgresql&logoColor=white">
   <img alt="Docker" src="https://img.shields.io/badge/Docker-2496ED?logo=docker&logoColor=white">
   <img alt="REST API" src="https://img.shields.io/badge/REST_API-4B8BBE">
+  <a href="https://github.com/Wwerneck/sistema-Clinoryn/actions/workflows/ci.yml"><img alt="CI" src="https://github.com/Wwerneck/sistema-Clinoryn/actions/workflows/ci.yml/badge.svg?branch=master"></a>
+  <a href="./CHANGELOG.md"><img alt="Release" src="https://img.shields.io/badge/release-v1.0.0-2ea44f"></a>
 </p>
 
 > Projeto de portfólio desenvolvido por [Weslley Werneck](https://github.com/Wwerneck).
 >
 > A **Clinoryn** centraliza a operação de uma clínica em uma aplicação web com controle de acesso por perfil, agenda médica, prontuário eletrônico, exames, prescrições, financeiro, auditoria e API REST versionada.
+
+## Avaliação rápida
+
+- **Backend e regras de negócio:** perfis, autorização por objeto, agenda transacional, prontuário, financeiro e auditoria.
+- **Qualidade:** 48 testes, cobertura local de 83% e CI com lint, migrations e testes.
+- **Como testar:** suba a aplicação com Docker, execute `python manage.py seed_demo` e entre com uma das contas demonstrativas descritas abaixo.
 
 ## Visão executiva
 
@@ -314,9 +322,9 @@ Os endpoints aplicam isolamento por perfil e permissão por objeto para reduzir 
 
 Faça backups regulares do volume PostgreSQL e do volume `private_media`. Ambos são necessários para uma restauração completa. Documentos privados nunca devem ser publicados diretamente pelo Nginx.
 
-## Screenshots
+## Evidências visuais
 
-Adicione capturas dos dashboards administrativo, médico, recepção e paciente em `docs/screenshots/` antes da publicação final do portfólio. Não use dados reais ou identificáveis nas imagens.
+O diretório [`docs/screenshots/`](docs/screenshots/) está reservado para capturas feitas apenas com dados sintéticos. O [roteiro de demonstração](docs/screenshots/README.md) define as telas mais relevantes e as regras para não expor dados identificáveis.
 
 ## Roadmap
 
