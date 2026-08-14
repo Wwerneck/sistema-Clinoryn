@@ -1,6 +1,52 @@
 # Clinoryn
 
-Fundação de um sistema web para gestão de clínicas médicas, construída com Django Templates e PostgreSQL.
+<p align="center">
+  <strong>Plataforma full-stack para gestão segura e rastreável de clínicas médicas</strong>
+</p>
+
+<p align="center">
+  <img alt="Python" src="https://img.shields.io/badge/Python-3776AB?logo=python&logoColor=white">
+  <img alt="Django" src="https://img.shields.io/badge/Django-092E20?logo=django&logoColor=white">
+  <img alt="PostgreSQL" src="https://img.shields.io/badge/PostgreSQL-4169E1?logo=postgresql&logoColor=white">
+  <img alt="Docker" src="https://img.shields.io/badge/Docker-2496ED?logo=docker&logoColor=white">
+  <img alt="REST API" src="https://img.shields.io/badge/REST_API-4B8BBE">
+</p>
+
+> Projeto de portfólio desenvolvido por [Weslley Werneck](https://github.com/Wwerneck).
+>
+> A **Clinoryn** centraliza a operação de uma clínica em uma aplicação web com controle de acesso por perfil, agenda médica, prontuário eletrônico, exames, prescrições, financeiro, auditoria e API REST versionada.
+
+## Visão executiva
+
+A Clinoryn foi criada para demonstrar competências de desenvolvimento backend aplicadas a um domínio com regras de negócio reais: modelagem, transações, autorização, proteção de dados, qualidade de código e execução em containers.
+
+### Destaques técnicos
+
+- **Controle de acesso por perfil e por objeto:** administradores, médicos, recepção e pacientes acessam somente os dados relacionados às suas responsabilidades e vínculos.
+- **Agenda com regras de negócio:** disponibilidade, bloqueios, conflitos, reagendamentos e estados do atendimento são validados pelo backend.
+- **Dados clínicos protegidos:** documentos privados, segregação entre dados clínicos e administrativos e auditoria de operações sensíveis.
+- **API pronta para integração:** Django REST Framework, autenticação JWT, documentação OpenAPI e CORS configurável.
+- **Entrega profissional:** Docker, Gunicorn, Nginx, health checks, GitHub Actions, Ruff e testes automatizados.
+
+## Stack
+
+| Camada | Tecnologias |
+| --- | --- |
+| Backend | Python, Django, Django REST Framework |
+| Dados | PostgreSQL, Django ORM |
+| Segurança | JWT, RBAC, permissões por objeto, auditoria |
+| Infraestrutura | Docker, Gunicorn, Nginx, health checks |
+| Qualidade | GitHub Actions, Ruff, testes Django, Coverage |
+
+## Evidências no projeto
+
+| Indicador | Evidência |
+| --- | --- |
+| Escopo funcional | 12 etapas implementadas |
+| Testes automatizados | 48 testes |
+| Cobertura local | 83% |
+| API | REST versionada em `/api/v1/` |
+| Integração contínua | Lint, migrations, testes e cobertura no CI |
 
 ## Escopo atual — Etapas 1 a 12
 
