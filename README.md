@@ -1,4 +1,4 @@
-# Clinoryn
+<h1 align="center">Clinoryn</h1>
 
 <p align="center">
   <strong>Plataforma full-stack para gestão segura e rastreável de clínicas médicas</strong>
@@ -17,6 +17,14 @@
 > Projeto de portfólio desenvolvido por [Weslley Werneck](https://github.com/Wwerneck).
 >
 > A **Clinoryn** centraliza a operação de uma clínica em uma aplicação web com controle de acesso por perfil, agenda médica, prontuário eletrônico, exames, prescrições, financeiro, auditoria e API REST versionada.
+
+## Demonstração online
+
+[**Abrir demonstração pública da Clinoryn**](https://clinoryn-demo.onrender.com/conta/entrar/?next=/)
+
+> Ambiente com dados inteiramente fictícios e alterações desativadas para uma navegação segura.
+>
+> **Acesso de demonstração:** `demo_admin` / `Demo@123456`
 
 ## Avaliação rápida
 
@@ -361,7 +369,7 @@ consultas/              agendamento, reagendamento e cancelamento
 prontuarios/             registro clínico e timeline de evoluções
 prescricoes/             prescrições e itens de medicamentos
 exames/                  exames e downloads privados
-financeiro/              pagamentos e indicadores financeiros
+financeiro/               pagamentos e indicadores financeiros
 auditoria/               rastreabilidade de operações sensíveis
 templates/             templates compartilhados
 static/                CSS e futuros assets
